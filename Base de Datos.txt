@@ -1,0 +1,46 @@
+SELECT * FROM country;
+USE mondako;
+INSERT INTO country (country_name,continent,country_url)	
+VALUES (
+'Alemania','Europe','https://upload.wikimedia.org/wikipedia/en/thumb/b/ba/Flag_of_Germany.svg/1200px-Flag_of_Germany.svg.png'),
+('Arabia Saudita','Asia','https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Flag_of_Saudi_Arabia.svg/1200px-Flag_of_Saudi_Arabia.svg.png'),
+('Argentina','America','https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg');
+SELECT * FROM user;
+INSERT INTO user (description_user,id_country,name,email)
+VALUES('Fotografa',1,'Ari','arigovea@gmail.com'),
+('Dibujante',1,'Sara','sarahi12@hotmail.com'),
+('Programadora',2,'Andrea','andy123@hotmail.com');
+
+SELECT user.*,country.country_name FROM user
+INNER JOIN country ON user.id_country = country.id_country;
+
+SELECT * FROM user WHERE id_user NOT IN
+(SELECT id_user FROM user WHERE name LIKE 'A%');
+
+SELECT * FROM user GROUP BY id_country HAVING id_country = 2;
+
+DELIMITER //
+CREATE PROCEDURE ChangeCountry2
+(
+	IN idfilter INT
+)
+BEGIN
+    UPDATE user
+	SET id_country = idfilter WHERE id_country = 1 ;
+END //
+DELIMITER ;
+
+CALL ChangeCountry2(3);
+
+DELIMITER //
+CREATE FUNCTION AllUsersCountry (idCountryFilter INT)
+RETURNS VARCHAR(50) DETERMINISTIC
+BEGIN
+	DECLARE location VARCHAR(50);
+    SET location = (SELECT CONCAT(country_name, " ",continent)
+    FROM country WHERE id_country = idCountryFilter);
+    RETURN location;
+END; //
+DELIMITER ; 
+
+SELECT AllUsersCountry(1);
