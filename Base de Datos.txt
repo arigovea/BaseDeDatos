@@ -5,19 +5,30 @@ VALUES (
 'Alemania','Europe','https://upload.wikimedia.org/wikipedia/en/thumb/b/ba/Flag_of_Germany.svg/1200px-Flag_of_Germany.svg.png'),
 ('Arabia Saudita','Asia','https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Flag_of_Saudi_Arabia.svg/1200px-Flag_of_Saudi_Arabia.svg.png'),
 ('Argentina','America','https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg');
+//Bien
+
 SELECT * FROM user;
 INSERT INTO user (description_user,id_country,name,email)
 VALUES('Fotografa',1,'Ari','arigovea@gmail.com'),
 ('Dibujante',1,'Sara','sarahi12@hotmail.com'),
 ('Programadora',2,'Andrea','andy123@hotmail.com');
+//Bien
 
-SELECT user.*,country.country_name FROM user
+SELECT 
+	user.*,
+	country.country_name 
+FROM user
 INNER JOIN country ON user.id_country = country.id_country;
+//bien 
+//es buena practica darle una estrucura al query similar a esta. eso lo hace más legible
 
 SELECT * FROM user WHERE id_user NOT IN
 (SELECT id_user FROM user WHERE name LIKE 'A%');
+//bien
 
 SELECT * FROM user GROUP BY id_country HAVING id_country = 2;
+//Cuando usas agrupamientos, generalmente es para usar funciones de agrupamiento(COUNT,SUM,etc) 
+//lo que usas para comparar en el  HAVING, debe ser el resultado de alguna columna especificada en el SELECT ;)
 
 DELIMITER //
 CREATE PROCEDURE ChangeCountry2
@@ -31,6 +42,8 @@ END //
 DELIMITER ;
 
 CALL ChangeCountry2(3);
+//Bien
+//podrías agregar que el id_contry a comparar en el WHERE sea el que mandes también, así quedaría tu Stored más dinamico ;)
 
 DELIMITER //
 CREATE FUNCTION AllUsersCountry (idCountryFilter INT)
@@ -44,3 +57,4 @@ END; //
 DELIMITER ; 
 
 SELECT AllUsersCountry(1);
+//Bien :D 
